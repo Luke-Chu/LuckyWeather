@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LuckyWeather</string>
+    <string name="hint_name">输入地址</string>
 </resources>
