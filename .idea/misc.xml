@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Luke/Documents/AndroidStudioProjects/LuckyWeather/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2585" />
+        <entry key="..\:/Luke/Documents/AndroidStudioProjects/LuckyWeather/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2585" />
         <entry key="..\:/Luke/Documents/AndroidStudioProjects/LuckyWeather/app/src/main/res/layout/activity_main.xml" value="0.286231884057971" />
         <entry key="..\:/Luke/Documents/AndroidStudioProjects/LuckyWeather/app/src/main/res/layout/activity_weather.xml" value="0.286231884057971" />
         <entry key="..\:/Luke/Documents/AndroidStudioProjects/LuckyWeather/app/src/main/res/layout/forecast.xml" value="0.286231884057971" />
