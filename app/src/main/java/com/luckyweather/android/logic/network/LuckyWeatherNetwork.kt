@@ -8,7 +8,9 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 object LuckyWeatherNetwork {
-
+    /**
+     * 对PlaceService接口进行封装
+     */
     private val placeService = ServiceCreator.create<PlaceService>()
 
     suspend fun searchPlaces(query: String) = placeService.searchPlaces(query).await()
@@ -28,4 +30,13 @@ object LuckyWeatherNetwork {
             })
         }
     }
+
+    /**
+     * 对新增的WeatherService接口进行封装
+     */
+    private val weatherService = ServiceCreator.create(WeatherService::class.java)
+
+    suspend fun getDailyWeather(lng: String, lat: String) = weatherService.getDailyWeather(lng, lat).await()
+
+    suspend fun getRealtimeWeather(lng: String, lat: String) = weatherService.getRealtimeWeather(lng, lat).await()
 }
