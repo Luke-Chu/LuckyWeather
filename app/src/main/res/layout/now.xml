@@ -14,6 +14,15 @@
         android:layout_width="match_parent"
         android:layout_height="70dp">
 
+        <!--新建一个Button，用于加入一个城市切换按钮(提示用户屏幕左侧边缘可以拖动)-->
+        <Button
+            android:id="@+id/navBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/ic_home"/>
+
         <TextView
             android:id="@+id/placeName"
             android:layout_width="wrap_content"

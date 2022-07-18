@@ -9,13 +9,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.luckyweather.android.R
+import com.luckyweather.android.MainActivity
 import com.luckyweather.android.databinding.FragmentPlaceBinding
 import com.luckyweather.android.ui.weather.WeatherActivity
 
@@ -37,7 +33,6 @@ class PlaceFragment : Fragment() {
         return binding.root
     }
 
-    //@SuppressLint("NotifyDataSetChanged")
     @SuppressLint("NotifyDataSetChanged")
     @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -46,8 +41,11 @@ class PlaceFragment : Fragment() {
          * 完成对选中城市的存储后，还需要对存储的状态进行判断和读取
          * 如果当前已有存储的城市数据，那么就获取已知存储的数据并解析成Place对象，然后使用它的经纬度和城市名直接跳转并传递给WeatherActivity
          * 这样用户就不需要每次都重新选择城市了
+         *
+         * 只有当PlaceFragment被嵌入到MainActivity中，并且之前已经存在选中的城市，此时才会直接跳转到WeatherActivity中
+         * 这样就可以解决无限循环跳转的问题了
          */
-        if (viewModel.isPlaceSaved()){
+        if (activity is MainActivity && viewModel.isPlaceSaved()){
             val place = viewModel.getSavedPlace()
             val intent = Intent(context,WeatherActivity::class.java).apply {
                 putExtra("location_lng",place.location.lng)

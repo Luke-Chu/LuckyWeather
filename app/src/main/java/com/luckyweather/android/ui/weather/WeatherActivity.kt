@@ -1,13 +1,17 @@
 package com.luckyweather.android.ui.weather
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.luckyweather.android.R
 import com.luckyweather.android.databinding.ActivityWeatherBinding
@@ -18,8 +22,8 @@ import java.util.*
 
 
 class WeatherActivity : AppCompatActivity() {
-    private lateinit var weatherBinding: ActivityWeatherBinding
-    private val viewModel by lazy { ViewModelProvider(this).get(WeatherViewModel::class.java) }
+    lateinit var weatherBinding: ActivityWeatherBinding
+    val viewModel by lazy { ViewModelProvider(this).get(WeatherViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,9 +58,46 @@ class WeatherActivity : AppCompatActivity() {
                 Toast.makeText(this,"无法陈功获取天气信息", Toast.LENGTH_SHORT).show()
                 it.exceptionOrNull()?.printStackTrace()
             }
+            //下拉刷新请求结束后需要将isRefreshing设置成false
+            weatherBinding.swipeRefresh.isRefreshing = false
+        }
+        //下拉刷新
+        weatherBinding.swipeRefresh.setColorSchemeResources(R.color.colorPrimary)
+        refreshWeather()
+        weatherBinding.swipeRefresh.setOnRefreshListener {
+            refreshWeather()
         }
         //当获取到服务器返回的天气数据时，就调用showWeatherInfo()方法进行一次刷新天气的请求
+        //viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
+
+        //滑动菜单的逻辑处理
+        weatherBinding.now.navBtn.setOnClickListener {
+            weatherBinding.drawerLayout.openDrawer(GravityCompat.START)//打开滑动菜单
+        }
+        //监听DrawerLayout的状态
+        weatherBinding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener{
+            //致命错误：An operation is not implemented: Not yet implemented
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
+
+            override fun onDrawerOpened(drawerView: View) {}
+
+            //当滑动菜单被隐藏时，同时也要隐藏输入法
+            override fun onDrawerClosed(drawerView: View) {
+                val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                manager.hideSoftInputFromWindow(drawerView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {}
+
+        })
+    }
+
+    /**
+     * 将之前刷新天气的代码提取到refreshWeather()函数中
+     */
+    fun refreshWeather(){
         viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
+        weatherBinding.swipeRefresh.isRefreshing = true
     }
 
     private fun showWeatherInfo(weather: Weather){
